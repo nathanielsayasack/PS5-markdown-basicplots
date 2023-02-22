@@ -1,4 +1,3 @@
-# PS5-markdown-basicplots
 library(tidyverse)
 library(dplyr)
 ## Part 1: Load and check data
@@ -69,31 +68,34 @@ arrange(desc(years))
 2. (5pt) Make a plot of total CO2 emissions over time for the U.S, China, and India. Add a few
 more countries of your choice. Explain what do you see.
 gapminder %>% 
-filter(iso3 ==c("USA","CHN","IND","VNM", "UKR")) %>% 
+filter(iso3 ==c("USA","CHN","ZMB","VNM", "UKR")) %>% 
 ggplot() +
 geom_line(aes(x=time,y=co2,col=iso3)) +
 geom_point(aes(x=time,y=co2,col=iso3))
-I notice that countries that are more developed have more CO2 emissions. Countries like Ukraine, Vietnam, and India have less CO2 emissions when compared to the US and China 
+I notice that countries that are more developed have more CO2 emissions. You can also see that recently developed nations,
+like India and China, have had an increase in CO2 emissions over time as they developed.
 3. (5pt) Now let’s analyze the CO2 emissions per capita (co2_PC). Make a similar plot of the
 same countries. What does this figure suggest?
 gapminder %>% 
-filter(iso3 ==c("USA","CHN","IND","VNM", "UKR")) %>% 
+filter(iso3 ==c("USA","CHN","ZMB","VNM", "UKR")) %>% 
 ggplot() +
 geom_line(aes(x=time,y=co2_PC,col=iso3)) +
 geom_point(aes(x=time,y=co2_PC,col=iso3))
-This chart indicates that the United States is by far the top in CO2 emissions per capita. All other countries are at the bottom of the graph. This might be due to the fact that the United States is substantially more developed than the other countries listed
-4. (6pt) Compute average CO2 emissions per capita across the continents (assume region is the same as continent). Comment what do you see
+This figure suggests that the USA is by far the leader in CO2 emissions per capita. All other nations are
+towards the bottom of the graph. This may be because that US is significantly more developed than the other
+countries listed, as it was one of the key leaders in the industrial revolution.
+4. (6pt) Compute average CO2 emissions per capita across the continents (assume region is the                                                                      same as continent). Comment what do you see
 Note: just compute averages over countries and ignore the fact that countries are of different
 size.
 Hint: Americas 2016 should be 4.80.
-The average CO2 emissions per capita in the year 2016.
+Here are the average CO2 emissions per capita in the year 2016.
 gapminder %>% 
 group_by(region) %>% 
 filter(!is.na(co2_PC), !is.na(region), time == 2016) %>% 
 summarise(mean = mean(co2_PC)) %>% 
 arrange(desc(mean))
 
-The average CO2 emissions per capita for all time.
+Here are the average CO2 emissions per capita for all time.
 gapminder %>% 
 group_by(region) %>% 
 filter(!is.na(co2_PC), !is.na(region)) %>% 
@@ -113,8 +115,9 @@ labs(title = "Average CO2 emissions per capita by year and region",
        y="average co2 emissions per capita") +
 scale_fill_discrete(name= "Year")
 
-6. Which countries are the three largest, and three smallest CO2 emitters (in terms of CO2 per capita) in 2019 for each continent? (Assume region is continent).
-The 2019 data is missing, I will use the 2016 data instead
+6. Which countries are the three largest, and three smallest CO2 emitters (in terms of CO2 per                                                                        capita) in 2019 for each continent? (Assume region is continent).
+capita) in 2019 for each continent (assume region is continent)
+Because the 2019 data is missing, I will use the 2016 data to answer this question
 3 smallest
 gapminder %>% 
 filter(time == "2016", !is.na(region), !is.na(co2_PC)) %>% 
@@ -144,16 +147,20 @@ ggplot(aes(x=GDP_PC,y=lifeExpectancy,col=region,size=totalPopulation)) +
 geom_point()
 3. (6pt) Compare these two plots and comment what do you see. How has world developed
 through the last 60 years?
-During the last 60 years, all countries' GDP per capita and life expectancy have grown.
-These factors tend to be linked to some extent, since a higher GDP per capita corresponds to a longer life expectancy. Yet, the rewards on GDP per capita and life expectancy are falling.
+  
+  Both GDP per capita and life expectancy have increased for all countries through the past 60 years.
+These factors seem to be related to some degree, as a higher GDP per capita represents a greater
+life expectancy. However, there are diminishing returns with GDP per capita and life expectancy.
+
 4. (6pt) Compute the average life expectancy for each continent in 1960 and 2019. Do the results
 fit with what do you see on the figures?
+  
 gapminder %>% 
 filter(!is.na(region), !is.na(lifeExpectancy), !is.na(time)) %>% 
 filter(time %in% c("1960","2019")) %>% 
 group_by(region, time) %>% 
 summarize(average = mean(lifeExpectancy))
-Yeah, the findings in terms of life expectancy typically agree with the nations from the regions.
+Yes, the results generally align with the countries from the regions in the figures in terms of life expectancy.
 
 5. (8pt) Compute the average LE growth from 1960-2019 across the continents. Show the results
 in the order of growth. Explain what do you see.
@@ -165,7 +172,13 @@ summarize(average = mean(lifeExpectancy)) %>%
 mutate(prev = lag(average), growth = average - prev) %>% 
 filter(!is.na(growth)) %>% 
 arrange(desc(growth))
-Continents with a large number of developing nations have experienced a bigger increase in life expectancy, whereas continents with a large number of industrialized countries have seen a smaller increase in life expectancy. Several African and Asian countries, for example, are still underdeveloped, contributing to the region's high growth in life expectancy, whereas European countries have been developed for a long time, as seen by their low increase in life expectancy.
+
+Continents with a lot of countries that are still in the developing phase have seen a greater increase in life
+expectancy while continents that have countries that have already been developed for a long time have a lower
+increase in life expectancy. For example, many countries in Africa and Asia are not fully developed yet and therefore
+contribute to Africa and Asia's great increase in life expectancy while countries in Europe have already been developed
+for a long time, demonstrated by their low increase in life expectancy.
+
 6. (6pt) Show the histogram of GDP per capita for years of 1960 and 2019. Try to put both
 histograms on the same graph, see how well you can do it!
 gapminder %>% 
@@ -173,7 +186,8 @@ filter(time %in% c(1960, 2019), !is.na(GDP_PC)) %>%
 ggplot(aes(x=GDP_PC, fill = factor(time))) +
 geom_histogram(alpha = 0.5, position = "dodge", bins = 30) +
 scale_fill_manual(values = c("red", "blue"), labels = c("1960" , "2019")) +
-labs(x = "GDP per capita", y= "Count", title = "GDP per capita for 1960 and 2019") 
+labs(x = "GDP per capita", y= "Count", title = "GDP per capita for 1960 and 2019")
+```
 
 7. (6pt) What was the ranking of US in terms of life expectancy in 1960 and in 2019? (When
 counting from top.)
@@ -214,4 +228,4 @@ filter(name == "United States of America") %>%
 select(relativerank)
 
 Finally tell us how many hours did you spend on this PS.
-I spent over 12 hours on this problem set  
+I spent over 12 hours on this problem set 
