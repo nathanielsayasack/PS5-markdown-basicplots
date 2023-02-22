@@ -73,7 +73,7 @@ filter(iso3 ==c("USA","CHN","IND","VNM", "UKR")) %>%
 ggplot() +
 geom_line(aes(x=time,y=co2,col=iso3)) +
 geom_point(aes(x=time,y=co2,col=iso3))
-I notice that countries that are more developed have more CO2 emissions. Countries like Ukraine, Vietnam, and India have less CO2 emissions when compared to the US and China 
+I notice that countries that are more developed have more CO2 emissions. Countries like Ukraine, Vietnam, and India have less CO2 emissions when compared to the US and China.
 3. (5pt) Now let’s analyze the CO2 emissions per capita (co2_PC). Make a similar plot of the
 same countries. What does this figure suggest?
 gapminder %>% 
@@ -81,7 +81,7 @@ filter(iso3 ==c("USA","CHN","IND","VNM", "UKR")) %>%
 ggplot() +
 geom_line(aes(x=time,y=co2_PC,col=iso3)) +
 geom_point(aes(x=time,y=co2_PC,col=iso3))
-This chart indicates that the United States is by far the top in CO2 emissions per capita. All other countries are at the bottom of the graph. This might be due to the fact that the United States is substantially more developed than the other countries listed
+This chart indicates that the United States is by far the top in CO2 emissions per capita. All other countries are at the bottom of the graph. This might be due to the fact that the United States is substantially more developed than the other countries listed.
 4. (6pt) Compute average CO2 emissions per capita across the continents (assume region is the same as continent). Comment what do you see
 Note: just compute averages over countries and ignore the fact that countries are of different
 size.
