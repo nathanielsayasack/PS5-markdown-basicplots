@@ -1,0 +1,299 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
+\usepackage[unicode=true]{hyperref}
+\hypersetup{
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+
+\section{PS5-markdown-basicplots}\label{ps5-markdown-basicplots}
+
+library(tidyverse) library(dplyr) \#\# Part 1: Load and check data 1.
+(1pt) For solving the problems, and answering the questions, create a
+new rmarkdown document with an appropriate title. created a newmarkdown
+file 2. (2pt) Load data. How many rows/columns do we have? gapminder
+\textless{}- read\_delim(``gapminder.csv'') dim(gapminder) 3. (2pt)
+Print a small sample of data. Does it look OK? gapminder
+\%\textgreater{}\% sample\_n(9) \#\# Part 2: Descriptive Statistics 1.
+(3pt) How many countries are there in the dataset? Analyze all three:
+iso3, iso2 and name gapminder \%\textgreater{}\% group\_by(name)
+\%\textgreater{}\%\\
+filter(!is.na(name)) \%\textgreater{}\% summarise(n = n\_distinct(name))
+\%\textgreater{}\% arrange(desc(n)) There are 249 unique country names
+gapminder \%\textgreater{}\% group\_by(iso2) \%\textgreater{}\%\\
+filter(!is.na(iso2)) \%\textgreater{}\% summarise(n=n\_distinct(iso2))
+\%\textgreater{}\% arrange(desc(n)) There are 248 unique country iso2
+codes gapminder \%\textgreater{}\% group\_by(iso3) \%\textgreater{}\%\\
+filter(!is.na(iso3)) \%\textgreater{}\% summarise(n=n\_distinct(iso3))
+\%\textgreater{}\% arrange(desc(n)) There are 253 unique country iso3
+codes
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  If you did this correctly, you saw that there are more names than
+  iso-2 codes, and there are even more iso3 -codes. What is going on?
+  Can you find it out?
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{(\alph{enumi})}
+\item
+  (5pt) Find how many names are there for each iso-2 code. Are there any
+  iso-2 codes that correspond to more than one name? What are these
+  countries? gapminder \%\textgreater{}\% group\_by(name)
+  \%\textgreater{}\% filter(is.na(iso2)) \%\textgreater{}\% summarize(n
+  = n\_distinct(iso2)) \%\textgreater{}\% arrange(desc(n)) Namibia does
+  not have an iso2 code and there is another country that does not have
+  a country name, just NA
+\item
+  (5pt) Now repeat the same for name and iso3-code. Are there country
+  names that have more than one iso3-code? What are these countries?
+  Hint: two of these entitites are CHANISL and NLD CURACAO. gapminder
+  \%\textgreater{}\% group\_by(iso3) \%\textgreater{}\%
+  filter(is.na(name)) \%\textgreater{}\% summarize(n =
+  n\_distinct(name)) \%\textgreater{}\% arrange(desc(n)) CHANISL, GBM,
+  KOS, and NLD\_CURACAO have iso3 codes, but they do not have a name
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  (2pt) What is the minimum and maximum year in these data?
+  min(gapminder\(time, na.rm = TRUE) max(gapminder\)time, na.rm = TRUE)
+  1960 is the minimum year; 2019 is the maximum year. \#\# Part 3: CO2
+  emissions
+\item
+  (2pt) How many missing co2 emissions are there for each year? Analyze
+  both missing CO2 and co2\_PC. Which years have most missing data?
+  gapminder \%\textgreater{}\% filter(is.na(co2\_PC), is.na(co2))
+  \%\textgreater{}\% group\_by(time) \%\textgreater{}\% summarise(years
+  = n()) \%\textgreater{}\% arrange(desc(years)) 2017, 2018, and 2019
+  have the most missing co2 emissions data
+\item
+  (5pt) Make a plot of total CO2 emissions over time for the U.S, China,
+  and India. Add a few more countries of your choice. Explain what do
+  you see. gapminder \%\textgreater{}\% filter(iso3
+  ==c(``USA'',``CHN'',``IND'',``VNM'', ``UKR'')) \%\textgreater{}\%
+  ggplot() + geom\_line(aes(x=time,y=co2,col=iso3)) +
+  geom\_point(aes(x=time,y=co2,col=iso3)) I notice that countries that
+  are more developed have more CO2 emissions. Countries like Ukraine,
+  Vietnam, and India have less CO2 emissions when compared to the US and
+  China.
+\item
+  (5pt) Now let's analyze the CO2 emissions per capita (co2\_PC). Make a
+  similar plot of the same countries. What does this figure suggest?
+  gapminder \%\textgreater{}\% filter(iso3
+  ==c(``USA'',``CHN'',``IND'',``VNM'', ``UKR'')) \%\textgreater{}\%
+  ggplot() + geom\_line(aes(x=time,y=co2\_PC,col=iso3)) +
+  geom\_point(aes(x=time,y=co2\_PC,col=iso3)) This chart indicates that
+  the United States is by far the top in CO2 emissions per capita. All
+  other countries are at the bottom of the graph. This might be due to
+  the fact that the United States is substantially more developed than
+  the other countries listed.
+\item
+  (6pt) Compute average CO2 emissions per capita across the continents
+  (assume region is the same as continent). Comment what do you see
+  Note: just compute averages over countries and ignore the fact that
+  countries are of different size. Hint: Americas 2016 should be 4.80.
+  The average CO2 emissions per capita in the year 2016. gapminder
+  \%\textgreater{}\% group\_by(region) \%\textgreater{}\%
+  filter(!is.na(co2\_PC), !is.na(region), time == 2016)
+  \%\textgreater{}\% summarise(mean = mean(co2\_PC)) \%\textgreater{}\%
+  arrange(desc(mean))
+\end{enumerate}
+
+The average CO2 emissions per capita for all time. gapminder
+\%\textgreater{}\% group\_by(region) \%\textgreater{}\%
+filter(!is.na(co2\_PC), !is.na(region)) \%\textgreater{}\%
+summarise(mean = mean(co2\_PC)) \%\textgreater{}\% arrange(desc(mean))
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\item
+  (7pt) Make a barplot where you show the previous results--average CO2
+  emissions per capita across continents in 1960 and 2016. gapminder
+  \%\textgreater{}\% filter(time \%in\% c(1960, 2016), !is.na(region),
+  !is.na(co2\_PC)) \%\textgreater{}\% group\_by(time, region)
+  \%\textgreater{}\% summarise(avg\_co2PC = mean(co2\_PC))
+  \%\textgreater{}\% ggplot(aes(x=region,y=avg\_co2PC,
+  fill=as.factor(time))) + geom\_col(position = ``dodge'') + labs(title
+  = ``Average CO2 emissions per capita by year and region'',
+  x=``region'', y=``average co2 emissions per capita'') +
+  scale\_fill\_discrete(name= ``Year'')
+\item
+  Which countries are the three largest, and three smallest CO2 emitters
+  (in terms of CO2 per capita) in 2019 for each continent? (Assume
+  region is continent). The 2019 data is missing, I will use the 2016
+  data instead 3 smallest gapminder \%\textgreater{}\% filter(time ==
+  ``2016'', !is.na(region), !is.na(co2\_PC)) \%\textgreater{}\%
+  group\_by(region) \%\textgreater{}\% arrange(co2\_PC)
+  \%\textgreater{}\% slice\_head(n=3) \%\textgreater{}\% select(region,
+  name, co2\_PC) 3 largest gapminder \%\textgreater{}\% filter(time ==
+  ``2016'', !is.na(region), !is.na(co2\_PC)) \%\textgreater{}\%
+  group\_by(region) \%\textgreater{}\% arrange(co2\_PC)
+  \%\textgreater{}\% slice\_tail(n=3) \%\textgreater{}\% select(region,
+  name, co2\_PC) \#\# Part 4: GDP per capita
+\item
+  (8pt) Make a scatterplot of GDP per capita versus life expectancy by
+  country, using data for 1960. Make the point size dependent on the
+  country size, and color those according to the continent. Feel free to
+  adjust the plot in other ways to make it better. gapminder
+  \%\textgreater{}\% filter(time == 1960, !is.na(region))
+  \%\textgreater{}\%
+  ggplot(aes(x=GDP\_PC,y=lifeExpectancy,col=region,size=totalPopulation))
+  + geom\_point()
+\item
+  (4pt) Make a similar plot, but this time use 2019 data only. gapminder
+  \%\textgreater{}\% filter(time == 2019, !is.na(region))
+  \%\textgreater{}\%
+  ggplot(aes(x=GDP\_PC,y=lifeExpectancy,col=region,size=totalPopulation))
+  + geom\_point()
+\item
+  (6pt) Compare these two plots and comment what do you see. How has
+  world developed through the last 60 years? During the last 60 years,
+  all countries' GDP per capita and life expectancy have grown. These
+  factors tend to be linked to some extent, since a higher GDP per
+  capita corresponds to a longer life expectancy. Yet, the rewards on
+  GDP per capita and life expectancy are falling.
+\item
+  (6pt) Compute the average life expectancy for each continent in 1960
+  and 2019. Do the results fit with what do you see on the figures?
+  gapminder \%\textgreater{}\% filter(!is.na(region),
+  !is.na(lifeExpectancy), !is.na(time)) \%\textgreater{}\% filter(time
+  \%in\% c(``1960'',``2019'')) \%\textgreater{}\% group\_by(region,
+  time) \%\textgreater{}\% summarize(average = mean(lifeExpectancy))
+  Yeah, the findings in terms of life expectancy typically agree with
+  the nations from the regions.
+\item
+  (8pt) Compute the average LE growth from 1960-2019 across the
+  continents. Show the results in the order of growth. Explain what do
+  you see. gapminder \%\textgreater{}\% filter(!is.na(region),
+  !is.na(lifeExpectancy), !is.na(time)) \%\textgreater{}\% filter(time
+  \%in\% c(``1960'',``2019'')) \%\textgreater{}\% group\_by(region,
+  time) \%\textgreater{}\% summarize(average = mean(lifeExpectancy))
+  \%\textgreater{}\% mutate(prev = lag(average), growth = average -
+  prev) \%\textgreater{}\% filter(!is.na(growth)) \%\textgreater{}\%
+  arrange(desc(growth)) Continents with a large number of developing
+  nations have experienced a bigger increase in life expectancy, whereas
+  continents with a large number of industrialized countries have seen a
+  smaller increase in life expectancy. Several African and Asian
+  countries, for example, are still underdeveloped, contributing to the
+  region's high growth in life expectancy, whereas European countries
+  have been developed for a long time, as seen by their low increase in
+  life expectancy.
+\item
+  (6pt) Show the histogram of GDP per capita for years of 1960 and 2019.
+  Try to put both histograms on the same graph, see how well you can do
+  it! gapminder \%\textgreater{}\% filter(time \%in\% c(1960, 2019),
+  !is.na(GDP\_PC)) \%\textgreater{}\% ggplot(aes(x=GDP\_PC, fill =
+  factor(time))) + geom\_histogram(alpha = 0.5, position = ``dodge'',
+  bins = 30) + scale\_fill\_manual(values = c(``red'', ``blue''), labels
+  = c(``1960'' , ``2019'')) + labs(x = ``GDP per capita'', y= ``Count'',
+  title = ``GDP per capita for 1960 and 2019'')
+\item
+  (6pt) What was the ranking of US in terms of life expectancy in 1960
+  and in 2019? (When counting from top.) Hint: check out the function
+  rank()! Hint2: 17 for 1960.
+\end{enumerate}
+
+1960 life expectancy rank gapminder \%\textgreater{}\% filter(time ==
+``1960'', !is.na(lifeExpectancy), !is.na(region)) \%\textgreater{}\%
+mutate(rank = rank(-lifeExpectancy)) \%\textgreater{}\% filter(name ==
+``United States of America'') \%\textgreater{}\% select(rank) 2019 life
+expectancy rank gapminder \%\textgreater{}\% filter(time == ``2019'',
+!is.na(lifeExpectancy), !is.na(region)) \%\textgreater{}\% mutate(rank =
+rank(-lifeExpectancy)) \%\textgreater{}\% filter(name == ``United States
+of America'') \%\textgreater{}\% select(rank) 8. (6pt) If you did this
+correctly, then you noticed that US ranking has been falling quite a
+bit. But we also have more countries in 2019--what about the relative
+rank divided by the corresponding number of countries that have LE data
+in the corresponding year? Hint: 0.0904 for 1960.
+
+1960 relative rank gapminder \%\textgreater{}\%
+filter(!is.na(lifeExpectancy), time == ``1960'', !is.na(region))
+\%\textgreater{}\% mutate(rank = rank(-lifeExpectancy), number\_country
+= n(), relativerank = rank/number\_country) \%\textgreater{}\%
+select(name, rank, number\_country, relativerank) \%\textgreater{}\%
+filter(name == ``United States of America'') \%\textgreater{}\%
+select(relativerank)
+
+2019 relative rank gapminder \%\textgreater{}\%
+filter(!is.na(lifeExpectancy), time == ``2019'', !is.na(region))
+\%\textgreater{}\% mutate(rank = rank(-lifeExpectancy), number\_country
+= n(), relativerank = rank/number\_country) \%\textgreater{}\%
+select(name, rank, number\_country, relativerank) \%\textgreater{}\%
+filter(name == ``United States of America'') \%\textgreater{}\%
+select(relativerank)
+
+Finally tell us how many hours did you spend on this PS. I spent over 12
+hours on this problem set
+
+\end{document}
