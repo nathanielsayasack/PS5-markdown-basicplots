@@ -1,3 +1,8 @@
+---
+output:
+  html_document: default
+  pdf_document: default
+---
 --
 output: html_document
 ---
@@ -97,7 +102,7 @@ gapminder %>%
 more countries of your choice. Explain what do you see.
 
 ```{r}
-gm %>% 
+gapminder %>% 
   filter(iso3 ==c("USA","CHN","IND","VNM", "UKR")) %>% 
   ggplot() +
   geom_line(aes(x=time,y=co2,col=iso3)) +
@@ -108,7 +113,7 @@ I notice that countries that are more developed have more CO2 emissions. Countri
 3. (5pt) Now let’s analyze the CO2 emissions per capita (co2_PC). Make a similar plot of the
 same countries. What does this figure suggest?
 ```{r}
-gm %>% 
+gapminder %>% 
   filter(iso3 ==c("USA","CHN","IND","VNM", "UKR")) %>% 
   ggplot() +
   geom_line(aes(x=time,y=co2_PC,col=iso3)) +
@@ -124,7 +129,7 @@ Hint: Americas 2016 should be 4.80.
 
 Here are the average CO2 emissions per capita in the year 2016.
 ```{r}
-gapm %>% 
+gapminder %>% 
   group_by(region) %>% 
   filter(!is.na(co2_PC), !is.na(region), time == 2016) %>% 
   summarise(mean = mean(co2_PC)) %>% 
